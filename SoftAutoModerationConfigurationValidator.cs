@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 namespace SoftAutoModerationPlugin;
 
 [UsedImplicitly]
-public class SoftAutoModerationConfigurationValidator : AbstractValidator<AutoModerationConfiguration>
+public class SoftAutoModerationConfigurationValidator : AbstractValidator<SoftAutoModerationConfiguration>
 {
     public SoftAutoModerationConfigurationValidator()
     {

@@ -8,7 +8,7 @@ using AssettoServer.Server.Weather;
 using AssettoServer.Shared.Network.Packets.Outgoing;
 using AssettoServer.Shared.Network.Packets.Shared;
 using AssettoServer.Shared.Services;
-using AutoModerationPlugin.Packets;
+using SoftAutoModerationPlugin.Packets;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -20,23 +20,23 @@ public class SoftAutoModerationPlugin : CriticalBackgroundService, IAssettoServe
 {
     private const double NauticalTwilight = -12.0 * Math.PI / 180.0;
     
-    private readonly List<EntryCarAutoModeration> _instances = new();
+    private readonly List<SoftAutoModerationEntryCar> _instances = new();
 
     private readonly ACServerConfiguration _serverConfiguration;
-    private readonly AutoModerationConfiguration _configuration;
+    private readonly SoftAutoModerationConfiguration _configuration;
     private readonly EntryCarManager _entryCarManager;
     private readonly WeatherManager _weatherManager;
-    private readonly Func<EntryCar, EntryCarAutoModeration> _entryCarAutoModerationFactory;
+    private readonly Func<EntryCar, SoftAutoModerationEntryCar> _softAutoModerationEntryCarFactory;
     private readonly AiSpline? _aiSpline;
 
     private readonly float _laneRadiusSquared;
 
-    public AutoModerationPlugin(AutoModerationConfiguration configuration,
+    public SoftAutoModerationPlugin(SoftAutoModerationConfiguration configuration,
         EntryCarManager entryCarManager,
         WeatherManager weatherManager,
         ACServerConfiguration serverConfiguration,
         CSPServerScriptProvider scriptProvider,
-        Func<EntryCar, EntryCarAutoModeration> entryCarAutoModerationFactory,
+        Func<EntryCar, SoftAutoModerationEntryCar> softAutoModerationEntryCarFactory,
         IHostApplicationLifetime applicationLifetime,
         AiSpline? aiSpline = null) : base(applicationLifetime)
     {
@@ -44,7 +44,7 @@ public class SoftAutoModerationPlugin : CriticalBackgroundService, IAssettoServe
         _entryCarManager = entryCarManager;
         _weatherManager = weatherManager;
         _serverConfiguration = serverConfiguration;
-        _entryCarAutoModerationFactory = entryCarAutoModerationFactory;
+        _softAutoModerationEntryCarFactory = softAutoModerationEntryCarFactory;
         _aiSpline = aiSpline;
 
         if (aiSpline == null)
@@ -75,7 +75,7 @@ public class SoftAutoModerationPlugin : CriticalBackgroundService, IAssettoServe
     {
         foreach (var entryCar in _entryCarManager.EntryCars)
         {
-            _instances.Add(_entryCarAutoModerationFactory(entryCar));
+            _instances.Add(_softAutoModerationEntryCarFactory(entryCar));
         }
         
         if (_configuration.NoLightsKick.Enabled && !_weatherManager.CurrentSunPosition.HasValue)
@@ -179,7 +179,7 @@ public class SoftAutoModerationPlugin : CriticalBackgroundService, IAssettoServe
 
                     if (_serverConfiguration.Extra.EnableClientMessages && oldFlags != instance.CurrentFlags)
                     {
-                        client.SendPacket(new AutoModerationFlags
+                        client.SendPacket(new SoftAutoModerationFlags
                         {
                             Flags = instance.CurrentFlags
                         });
