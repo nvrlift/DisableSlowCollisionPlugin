@@ -66,8 +66,8 @@ public class DisableSlowCollisionPlugin : CriticalBackgroundService, IAssettoSer
         
         if (_serverConfiguration.Extra.EnableClientMessages)
         {
-            using var streamReader = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("AutoModerationPlugin.lua.automoderation.lua")!);
-            scriptProvider.AddScript(streamReader.ReadToEnd(), "automoderation.lua");
+            using var streamReader = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("SoftAutoModerationPlugin.lua.softautomoderation.lua")!);
+            scriptProvider.AddScript(streamReader.ReadToEnd(), "softautomoderation.lua");
         }
     }
 

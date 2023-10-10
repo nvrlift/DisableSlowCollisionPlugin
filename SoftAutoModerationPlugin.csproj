@@ -25,8 +25,21 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="lua\automoderation.lua" />
-      <EmbeddedResource Include="lua\automoderation.lua" />
+        <None Remove="lua\softautomoderation.lua" />
+        <EmbeddedResource Include="lua\softautomoderation.lua" />
+        <None Update="Flags\no_lights.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Flags\no_parking.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Flags\wrong_way.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Flags" />
     </ItemGroup>
 
 </Project>
