@@ -13,10 +13,10 @@ using JetBrains.Annotations;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
-namespace DisableSlowCollisionPlugin;
+namespace SoftAutoModerationPlugin;
 
 [UsedImplicitly]
-public class DisableSlowCollisionPlugin : CriticalBackgroundService, IAssettoServerAutostart
+public class SoftAutoModerationPlugin : CriticalBackgroundService, IAssettoServerAutostart
 {
     private const double NauticalTwilight = -12.0 * Math.PI / 180.0;
     

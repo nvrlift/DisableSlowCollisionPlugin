@@ -1,7 +1,4 @@
-﻿# DisableSlowCollisionPlugin
-
-very early wip
-Special thanks to @ / tuttertep for helping with the server script!
+﻿# SoftAutoModerationPlugin
 
 Admins are exempt from these rules.
 
@@ -12,13 +9,13 @@ Included in the `Flags` folder are Japanese-style signs. You can replace these w
 Enable the plugin in `extra_cfg.yml`
 ```yaml
 EnablePlugins:
-- DisableSlowCollisionPlugin
+- SoftAutoModerationPlugin
 ```
 
 Example configuration (add to bottom of `extra_cfg.yml`)
 ```yaml
 ---
-!DisableSlowCollisionConfiguration
+!SoftAutoModerationConfiguration
 # Kick players driving without lights during the night
 NoLightsKick:
   # Set to false to disable

@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
 using JetBrains.Annotations;
 
-namespace DisableSlowCollisionPlugin;
+namespace SoftAutoModerationPlugin;
 
 [UsedImplicitly]
-public class DisableSlowCollisionConfigurationValidator : AbstractValidator<AutoModerationConfiguration>
+public class SoftAutoModerationConfigurationValidator : AbstractValidator<AutoModerationConfiguration>
 {
-    public DisableSlowCollisionConfigurationValidator()
+    public SoftAutoModerationConfigurationValidator()
     {
         RuleFor(cfg => cfg.WrongWayKick).NotNull().ChildRules(wwk =>
         {
