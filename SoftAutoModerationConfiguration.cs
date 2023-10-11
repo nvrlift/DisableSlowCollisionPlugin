@@ -7,13 +7,13 @@ namespace SoftAutoModerationPlugin;
 [UsedImplicitly(ImplicitUseKindFlags.Assign, ImplicitUseTargetFlags.WithMembers)]
 public class SoftAutoModerationConfiguration : IValidateConfiguration<SoftAutoModerationConfigurationValidator>
 {
-    public WrongWayKickConfiguration WrongWayKick { get; init; } = new();
-    public NoLightsKickConfiguration NoLightsKick { get; init; } = new();
-    public BlockingRoadKickConfiguration BlockingRoadKick { get; init; } = new();
+    public WrongWayPitsConfiguration WrongWayPits { get; init; } = new();
+    public NoLightsPitsConfiguration NoLightsPits { get; init; } = new();
+    public BlockingRoadPitsConfiguration BlockingRoadPits { get; init; } = new();
 }
 
 [UsedImplicitly(ImplicitUseKindFlags.Assign, ImplicitUseTargetFlags.WithMembers)]
-public class WrongWayKickConfiguration
+public class WrongWayPitsConfiguration
 {
     public bool Enabled { get; set; } = false;
     public int DurationSeconds { get; set; } = 20;
@@ -23,7 +23,7 @@ public class WrongWayKickConfiguration
 }
 
 [UsedImplicitly(ImplicitUseKindFlags.Assign, ImplicitUseTargetFlags.WithMembers)]
-public class NoLightsKickConfiguration
+public class NoLightsPitsConfiguration
 {
     public bool Enabled { get; set; } = false;
     public int DurationSeconds { get; set; } = 60;
@@ -33,10 +33,19 @@ public class NoLightsKickConfiguration
 }
 
 [UsedImplicitly(ImplicitUseKindFlags.Assign, ImplicitUseTargetFlags.WithMembers)]
-public class BlockingRoadKickConfiguration
+public class BlockingRoadPitsConfiguration
 {
     public bool Enabled { get; set; } = false;
     public int DurationSeconds { get; set; } = 30;
+    public int MaximumSpeedKph { get; set; } = 5;
+    
+    [YamlIgnore] public float MaximumSpeedMs => MaximumSpeedKph / 3.6f;
+}
+
+[UsedImplicitly(ImplicitUseKindFlags.Assign, ImplicitUseTargetFlags.WithMembers)]
+public class SlowCollisionConfiguration
+{
+    public bool Enabled { get; set; } = false;
     public int MaximumSpeedKph { get; set; } = 5;
     
     [YamlIgnore] public float MaximumSpeedMs => MaximumSpeedKph / 3.6f;

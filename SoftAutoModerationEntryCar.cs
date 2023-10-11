@@ -1,4 +1,5 @@
-﻿using AssettoServer.Server;
+﻿using System;
+using AssettoServer.Server;
 using AssettoServer.Server.Ai.Splines;
 using SoftAutoModerationPlugin.Packets;
 

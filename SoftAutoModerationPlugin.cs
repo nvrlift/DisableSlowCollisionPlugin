@@ -1,5 +1,10 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Numerics;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using AssettoServer.Server;
 using AssettoServer.Server.Ai.Splines;
 using AssettoServer.Server.Configuration;
@@ -49,12 +54,12 @@ public class SoftAutoModerationPlugin : CriticalBackgroundService, IAssettoServe
 
         if (aiSpline == null)
         {
-            if (_configuration.WrongWayKick.Enabled)
+            if (_configuration.WrongWayPits.Enabled)
             {
                 throw new ConfigurationException("AutoModerationPlugin: Wrong way kick does not work with AI traffic disabled");
             }
 
-            if (_configuration.BlockingRoadKick.Enabled)
+            if (_configuration.BlockingRoadPits.Enabled)
             {
                 throw new ConfigurationException("AutoModerationPlugin: Blocking road kick does not work with AI traffic disabled");
             }
@@ -78,7 +83,7 @@ public class SoftAutoModerationPlugin : CriticalBackgroundService, IAssettoServe
             _instances.Add(_softAutoModerationEntryCarFactory(entryCar));
         }
         
-        if (_configuration.NoLightsKick.Enabled && !_weatherManager.CurrentSunPosition.HasValue)
+        if (_configuration.NoLightsPits.Enabled && !_weatherManager.CurrentSunPosition.HasValue)
         {
             throw new ConfigurationException("AutoModerationPlugin: No lights kick does not work with missing track params");
         }
@@ -96,20 +101,20 @@ public class SoftAutoModerationPlugin : CriticalBackgroundService, IAssettoServe
                     var oldFlags = instance.CurrentFlags;
                     instance.UpdateSplinePoint();
 
-                    if (_configuration.NoLightsKick.Enabled)
+                    if (_configuration.NoLightsPits.Enabled)
                     {
                         if (_weatherManager.CurrentSunPosition!.Value.Altitude < NauticalTwilight
                             && (instance.EntryCar.Status.StatusFlag & CarStatusFlags.LightsOn) == 0
-                            && instance.EntryCar.Status.Velocity.LengthSquared() > _configuration.NoLightsKick.MinimumSpeedMs * _configuration.NoLightsKick.MinimumSpeedMs)
+                            && instance.EntryCar.Status.Velocity.LengthSquared() > _configuration.NoLightsPits.MinimumSpeedMs * _configuration.NoLightsPits.MinimumSpeedMs)
                         {
                             instance.CurrentFlags |= Flags.NoLights;
                             
                             instance.NoLightSeconds++;
-                            if (instance.NoLightSeconds > _configuration.NoLightsKick.DurationSeconds)
+                            if (instance.NoLightSeconds > _configuration.NoLightsPits.DurationSeconds)
                             {
                                 _ = _entryCarManager.KickAsync(client, "driving without lights");
                             }
-                            else if (!instance.HasSentNoLightWarning && instance.NoLightSeconds > _configuration.NoLightsKick.DurationSeconds / 2)
+                            else if (!instance.HasSentNoLightWarning && instance.NoLightSeconds > _configuration.NoLightsPits.DurationSeconds / 2)
                             {
                                 instance.HasSentNoLightWarning = true;
                                 client.SendPacket(new ChatMessage { SessionId = 255, Message = "It is currently night, please turn on your lights or you will be kicked." });
@@ -123,21 +128,21 @@ public class SoftAutoModerationPlugin : CriticalBackgroundService, IAssettoServe
                         }
                     }
 
-                    if (_configuration.WrongWayKick.Enabled && _aiSpline != null)
+                    if (_configuration.WrongWayPits.Enabled && _aiSpline != null)
                     {
                         if (instance.CurrentSplinePointId >= 0
                             && instance.CurrentSplinePointDistanceSquared < _laneRadiusSquared
-                            && instance.EntryCar.Status.Velocity.LengthSquared() > _configuration.WrongWayKick.MinimumSpeedMs * _configuration.WrongWayKick.MinimumSpeedMs
+                            && instance.EntryCar.Status.Velocity.LengthSquared() > _configuration.WrongWayPits.MinimumSpeedMs * _configuration.WrongWayPits.MinimumSpeedMs
                             && Vector3.Dot(_aiSpline.Operations.GetForwardVector(instance.CurrentSplinePointId), instance.EntryCar.Status.Velocity) < 0)
                         {
                             instance.CurrentFlags |= Flags.WrongWay;
                             
                             instance.WrongWaySeconds++;
-                            if (instance.WrongWaySeconds > _configuration.WrongWayKick.DurationSeconds)
+                            if (instance.WrongWaySeconds > _configuration.WrongWayPits.DurationSeconds)
                             {
                                 _ = _entryCarManager.KickAsync(client, "driving the wrong way");
                             }
-                            else if (!instance.HasSentWrongWayWarning && instance.WrongWaySeconds > _configuration.WrongWayKick.DurationSeconds / 2)
+                            else if (!instance.HasSentWrongWayWarning && instance.WrongWaySeconds > _configuration.WrongWayPits.DurationSeconds / 2)
                             {
                                 instance.HasSentWrongWayWarning = true;
                                 client.SendPacket(new ChatMessage { SessionId = 255, Message = "You are driving the wrong way! Turn around or you will be kicked." });
@@ -151,19 +156,19 @@ public class SoftAutoModerationPlugin : CriticalBackgroundService, IAssettoServe
                         }
                     }
 
-                    if (_configuration.BlockingRoadKick.Enabled)
+                    if (_configuration.BlockingRoadPits.Enabled)
                     {
                         if (instance.CurrentSplinePointDistanceSquared < _laneRadiusSquared
-                            && instance.EntryCar.Status.Velocity.LengthSquared() < _configuration.BlockingRoadKick.MaximumSpeedMs * _configuration.BlockingRoadKick.MaximumSpeedMs)
+                            && instance.EntryCar.Status.Velocity.LengthSquared() < _configuration.BlockingRoadPits.MaximumSpeedMs * _configuration.BlockingRoadPits.MaximumSpeedMs)
                         {
                             instance.CurrentFlags |= Flags.NoParking;
                             
                             instance.BlockingRoadSeconds++;
-                            if (instance.BlockingRoadSeconds > _configuration.BlockingRoadKick.DurationSeconds)
+                            if (instance.BlockingRoadSeconds > _configuration.BlockingRoadPits.DurationSeconds)
                             {
                                 _ = _entryCarManager.KickAsync(client, "blocking the road");
                             }
-                            else if (!instance.HasSentBlockingRoadWarning && instance.BlockingRoadSeconds > _configuration.BlockingRoadKick.DurationSeconds / 2)
+                            else if (!instance.HasSentBlockingRoadWarning && instance.BlockingRoadSeconds > _configuration.BlockingRoadPits.DurationSeconds / 2)
                             {
                                 instance.HasSentBlockingRoadWarning = true;
                                 client.SendPacket(new ChatMessage { SessionId = 255, Message = "You are blocking the road! Please move or teleport to pits, or you will be kicked." });

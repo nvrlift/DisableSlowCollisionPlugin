@@ -8,17 +8,17 @@ public class SoftAutoModerationConfigurationValidator : AbstractValidator<SoftAu
 {
     public SoftAutoModerationConfigurationValidator()
     {
-        RuleFor(cfg => cfg.WrongWayKick).NotNull().ChildRules(wwk =>
+        RuleFor(cfg => cfg.WrongWayPits).NotNull().ChildRules(wwk =>
         {
             wwk.RuleFor(w => w.DurationSeconds).GreaterThanOrEqualTo(0);
             wwk.RuleFor(w => w.MinimumSpeedKph).GreaterThanOrEqualTo(0);
         });
-        RuleFor(cfg => cfg.NoLightsKick).NotNull().ChildRules(nlk =>
+        RuleFor(cfg => cfg.NoLightsPits).NotNull().ChildRules(nlk =>
         {
             nlk.RuleFor(n => n.DurationSeconds).GreaterThanOrEqualTo(0);
             nlk.RuleFor(n => n.MinimumSpeedKph).GreaterThanOrEqualTo(0);
         });
-        RuleFor(cfg => cfg.BlockingRoadKick).NotNull().ChildRules(brk =>
+        RuleFor(cfg => cfg.BlockingRoadPits).NotNull().ChildRules(brk =>
         {
             brk.RuleFor(b => b.DurationSeconds).GreaterThanOrEqualTo(0);
             brk.RuleFor(b => b.MaximumSpeedKph).GreaterThanOrEqualTo(0);

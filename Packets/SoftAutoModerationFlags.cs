@@ -1,4 +1,5 @@
-﻿using AssettoServer.Shared.Network.Packets;
+﻿using System;
+using AssettoServer.Shared.Network.Packets;
 using AssettoServer.Shared.Network.Packets.Outgoing;
 
 namespace SoftAutoModerationPlugin.Packets;
