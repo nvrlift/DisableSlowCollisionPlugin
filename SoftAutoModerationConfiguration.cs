@@ -2,10 +2,10 @@
 using JetBrains.Annotations;
 using YamlDotNet.Serialization;
 
-namespace DisableSlowCollisionPlugin;
+namespace SoftAutoModerationPlugin;
 
 [UsedImplicitly(ImplicitUseKindFlags.Assign, ImplicitUseTargetFlags.WithMembers)]
-public class DisableSlowCollisionConfiguration : IValidateConfiguration<AutoModerationConfigurationValidator>
+public class SoftAutoModerationConfiguration : IValidateConfiguration<SoftAutoModerationConfigurationValidator>
 {
     public WrongWayKickConfiguration WrongWayKick { get; init; } = new();
     public NoLightsKickConfiguration NoLightsKick { get; init; } = new();

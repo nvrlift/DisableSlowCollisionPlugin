@@ -1,11 +1,11 @@
 ﻿using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DisableSlowCollisionPlugin;
+namespace SoftAutoModerationPlugin;
 
 [ApiController]
 [Route("automoderation")]
-public class DisableSlowCollisionController : ControllerBase
+public class SoftAutoModerationController : ControllerBase
 {
     private static readonly string FlagsBasePath = Path.Join(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Flags");
     

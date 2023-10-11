@@ -1,10 +1,10 @@
 ﻿using AssettoServer.Server;
 using AssettoServer.Server.Ai.Splines;
-using AutoModerationPlugin.Packets;
+using SoftAutoModerationPlugin.Packets;
 
-namespace DisableSlowCollisionPlugin;
+namespace SoftAutoModerationPlugin;
 
-public class EntryCarAutoModeration
+public class SoftAutoModerationEntryCar
 {
     public EntryCar EntryCar { get; }
 
@@ -24,7 +24,7 @@ public class EntryCarAutoModeration
 
     private readonly AiSpline? _aiSpline;
     
-    public EntryCarAutoModeration(EntryCar entryCar, AiSpline? aiSpline = null)
+    public SoftAutoModerationEntryCar(EntryCar entryCar, AiSpline? aiSpline = null)
     {
         EntryCar = entryCar;
         EntryCar.ResetInvoked += OnResetInvoked;

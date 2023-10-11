@@ -1,9 +1,9 @@
 ﻿using AssettoServer.Shared.Network.Packets;
 using AssettoServer.Shared.Network.Packets.Outgoing;
 
-namespace DisableSlowCollisionPlugin.Packets;
+namespace SoftAutoModerationPlugin.Packets;
 
-public class DisableSlowCollisionFlags : IOutgoingNetworkPacket
+public class SoftAutoModerationFlags : IOutgoingNetworkPacket
 {
     public Flags Flags { get; set; }
     
