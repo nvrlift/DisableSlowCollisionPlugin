@@ -56,12 +56,12 @@ public class SoftAutoModerationPlugin : CriticalBackgroundService, IAssettoServe
         {
             if (_configuration.WrongWayPits.Enabled)
             {
-                throw new ConfigurationException("AutoModerationPlugin: Wrong way kick does not work with AI traffic disabled");
+                throw new ConfigurationException("SoftAutoModerationPlugin: Wrong way kick does not work with AI traffic disabled");
             }
 
             if (_configuration.BlockingRoadPits.Enabled)
             {
-                throw new ConfigurationException("AutoModerationPlugin: Blocking road kick does not work with AI traffic disabled");
+                throw new ConfigurationException("SoftAutoModerationPlugin: Blocking road kick does not work with AI traffic disabled");
             }
         }
         else 
@@ -85,7 +85,7 @@ public class SoftAutoModerationPlugin : CriticalBackgroundService, IAssettoServe
         
         if (_configuration.NoLightsPits.Enabled && !_weatherManager.CurrentSunPosition.HasValue)
         {
-            throw new ConfigurationException("AutoModerationPlugin: No lights kick does not work with missing track params");
+            throw new ConfigurationException("SoftAutoModerationPlugin: No lights kick does not work with missing track params");
         }
         
         while (!stoppingToken.IsCancellationRequested)
@@ -112,7 +112,7 @@ public class SoftAutoModerationPlugin : CriticalBackgroundService, IAssettoServe
                             instance.NoLightSeconds++;
                             if (instance.NoLightSeconds > _configuration.NoLightsPits.DurationSeconds)
                             {
-                                _ = _entryCarManager.KickAsync(client, "driving without lights");
+                                _ = _entryCarManager.KickAsync(client, "driving without lights"); // TODO tp to pits
                             }
                             else if (!instance.HasSentNoLightWarning && instance.NoLightSeconds > _configuration.NoLightsPits.DurationSeconds / 2)
                             {
@@ -140,7 +140,7 @@ public class SoftAutoModerationPlugin : CriticalBackgroundService, IAssettoServe
                             instance.WrongWaySeconds++;
                             if (instance.WrongWaySeconds > _configuration.WrongWayPits.DurationSeconds)
                             {
-                                _ = _entryCarManager.KickAsync(client, "driving the wrong way");
+                                _ = _entryCarManager.KickAsync(client, "driving the wrong way"); // TODO tp to pits
                             }
                             else if (!instance.HasSentWrongWayWarning && instance.WrongWaySeconds > _configuration.WrongWayPits.DurationSeconds / 2)
                             {
@@ -166,7 +166,7 @@ public class SoftAutoModerationPlugin : CriticalBackgroundService, IAssettoServe
                             instance.BlockingRoadSeconds++;
                             if (instance.BlockingRoadSeconds > _configuration.BlockingRoadPits.DurationSeconds)
                             {
-                                _ = _entryCarManager.KickAsync(client, "blocking the road");
+                                _ = _entryCarManager.KickAsync(client, "blocking the road"); // TODO tp to pits
                             }
                             else if (!instance.HasSentBlockingRoadWarning && instance.BlockingRoadSeconds > _configuration.BlockingRoadPits.DurationSeconds / 2)
                             {
@@ -193,7 +193,7 @@ public class SoftAutoModerationPlugin : CriticalBackgroundService, IAssettoServe
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Error during auto moderation update");
+                Log.Error(ex, "Error during soft auto moderation update");
             }
             finally
             {

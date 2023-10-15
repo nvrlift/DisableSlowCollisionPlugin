@@ -8,20 +8,20 @@ public class SoftAutoModerationConfigurationValidator : AbstractValidator<SoftAu
 {
     public SoftAutoModerationConfigurationValidator()
     {
-        RuleFor(cfg => cfg.WrongWayPits).NotNull().ChildRules(wwk =>
+        RuleFor(cfg => cfg.WrongWayPits).NotNull().ChildRules(wwp =>
         {
-            wwk.RuleFor(w => w.DurationSeconds).GreaterThanOrEqualTo(0);
-            wwk.RuleFor(w => w.MinimumSpeedKph).GreaterThanOrEqualTo(0);
+            wwp.RuleFor(w => w.DurationSeconds).GreaterThanOrEqualTo(0);
+            wwp.RuleFor(w => w.MinimumSpeedKph).GreaterThanOrEqualTo(0);
         });
-        RuleFor(cfg => cfg.NoLightsPits).NotNull().ChildRules(nlk =>
+        RuleFor(cfg => cfg.NoLightsPits).NotNull().ChildRules(nlp =>
         {
-            nlk.RuleFor(n => n.DurationSeconds).GreaterThanOrEqualTo(0);
-            nlk.RuleFor(n => n.MinimumSpeedKph).GreaterThanOrEqualTo(0);
+            nlp.RuleFor(n => n.DurationSeconds).GreaterThanOrEqualTo(0);
+            nlp.RuleFor(n => n.MinimumSpeedKph).GreaterThanOrEqualTo(0);
         });
-        RuleFor(cfg => cfg.BlockingRoadPits).NotNull().ChildRules(brk =>
+        RuleFor(cfg => cfg.BlockingRoadPits).NotNull().ChildRules(brp =>
         {
-            brk.RuleFor(b => b.DurationSeconds).GreaterThanOrEqualTo(0);
-            brk.RuleFor(b => b.MaximumSpeedKph).GreaterThanOrEqualTo(0);
+            brp.RuleFor(b => b.DurationSeconds).GreaterThanOrEqualTo(0);
+            brp.RuleFor(b => b.MaximumSpeedKph).GreaterThanOrEqualTo(0);
         });
     }
 }
