@@ -23,10 +23,12 @@
             <ExcludeAssets>runtime</ExcludeAssets>
         </ProjectReference>
     </ItemGroup>
-
+    
     <ItemGroup>
         <None Remove="lua\softautomoderation.lua" />
         <EmbeddedResource Include="lua\softautomoderation.lua" />
+        <None Remove="lua\pitsteleport.lua" />
+        <EmbeddedResource Include="lua\pitsteleport.lua" />
         <None Update="Flags\no_lights.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
