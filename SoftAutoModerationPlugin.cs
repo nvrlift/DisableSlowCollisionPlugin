@@ -71,8 +71,17 @@ public class SoftAutoModerationPlugin : CriticalBackgroundService, IAssettoServe
         
         if (_serverConfiguration.Extra.EnableClientMessages)
         {
-            using var streamReader = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("SoftAutoModerationPlugin.lua.softautomoderation.lua")!);
-            scriptProvider.AddScript(streamReader.ReadToEnd(), "softautomoderation.lua");
+            using (var streamReader = new StreamReader(Assembly.GetExecutingAssembly()
+                       .GetManifestResourceStream("SoftAutoModerationPlugin.lua.softautomoderation.lua")!))
+            {
+                scriptProvider.AddScript(streamReader.ReadToEnd(), "softautomoderation.lua");
+            }
+            
+            using (var streamReader = new StreamReader(Assembly.GetExecutingAssembly()
+                       .GetManifestResourceStream("SoftAutoModerationPlugin.lua.pitsteleport.lua")!))
+            {
+                scriptProvider.AddScript(streamReader.ReadToEnd(), "pitsteleport.lua");
+            }
         }
     }
 
